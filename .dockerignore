@@ -1,0 +1,13 @@
+*
+!pyproject.toml
+!README.md
+!LICENSE
+!shared/
+!shared/*.py
+!gateway/
+!gateway/*.py
+!ehls/
+!ehls/*.py
+!ehls/static/
+!ehls/static/*.html
+!ehls/static/*.js

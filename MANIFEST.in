@@ -2,3 +2,7 @@ include LICENSE README.md
 recursive-include docs *.md *.json
 recursive-include examples *.py
 recursive-include tests *.py
+recursive-include sdk *.js *.json *.md LICENSE
+include Dockerfile compose.yaml .dockerignore .env.example
+recursive-include ehls/static *.html *.js
+recursive-include tools *.py

@@ -4,6 +4,8 @@
 
 EHLS delivers manufacturing instructions as bounded encrypted segments. The aim is to reduce the amount of usable instruction data held at the receiving endpoint and tie delivery to an enrolled machine and a verified session. A deployed system couples delivery to execution feedback and disposal of each working segment.
 
+The optional integration service exposes these primitives through a local simulator API; see [frontend integration](INTEGRATION.md). Its REST API is a control interface, separate from the protocol packet format described below.
+
 This guide documents the implementation in this repository. It is a Python reference, not a complete language-independent standard or an independent security audit. Models for enrollment, challenges, recovery, adaptive control and certificates are present; their application services are outside this extraction.
 
 ## Participants and lifecycle
@@ -57,7 +59,7 @@ key = HKDF-SHA256(IKM, salt=nonce, info=b"EHLS-session-v1", length=32)
 
 `derive_session_key_ecdh()` validates peer-key type and length and requires a nonempty BIP hash. This mode does not include the timestamp. Authenticate the key exchange and bind it to the authorized session. Forward secrecy depends on ephemeral-key handling and disposal; deleting Python references does not prove secure erasure.
 
-The local example holds both endpoints in one process and assumes its synthetic identity and public-key exchange are trusted. It is not a network handshake implementation.
+The local example and integration simulator hold both endpoints in one process and assumes its synthetic identity and public-key exchange are trusted. It is not a network handshake implementation.
 
 ## Packet envelope
 
@@ -126,4 +128,4 @@ The models provide reconnect and termination message types. This library does no
 
 Run `python -m pytest -q` after installing `.[dev]`. Tests cover encryption and integrity failures, changed AAD, packet round trips/signatures, X25519 agreement, memory wiping, strict lock failure, OS backend selection, and the example receiver's replay/order/authentication checks. Tests of memory lock wrappers do not imply that every deployment has permission to lock memory.
 
-No test in this extraction proves physical printer completion or whole-system non-persistence. Those require deployment-specific hardware and operating-system evidence.
+The optional service adds authenticated REST controls and simulated session progress; it does not add physical execution evidence. No test in this extraction proves physical printer completion or whole-system non-persistence. Those require deployment-specific hardware and operating-system evidence.
