@@ -149,6 +149,10 @@ python -m examples.local_stream
 
 The API is optional. Install `.` without extras to use only the underlying protocol library.
 
+## Security
+
+See [security boundaries and reporting](SECURITY.md) for the publication review, supported scope and private vulnerability reporting. Never commit real service tokens or printer credentials.
+
 ## License
 
 [MIT](LICENSE).

@@ -1,0 +1,33 @@
+name: Security checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --upgrade pip setuptools
+      - run: python -m pip install '.[api]' 'bandit>=1.8,<2' 'pip-audit>=2.9,<3' 'detect-secrets>=1.5,<2'
+      - run: bandit -r ehls shared gateway examples tools
+      - run: pip-audit --local --skip-editable
+      - name: Scan tracked files for secrets without network verification
+        run: |
+          # Source provenance hashes are public checksums, not credentials.
+          detect-secrets scan -n --exclude-lines '^\s*"(source_commit|source_sha256)": "[0-9a-f]{40,64}",?$' > /tmp/ehls-secrets.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('/tmp/ehls-secrets.json').read_text())
+          results = report['results']
+          # Report locations only; never echo a suspected secret into public logs.
+          for path, findings in results.items():
+              for finding in findings:
+                  print(f"Potential secret: {path}:{finding['line_number']} ({finding['type']})")
+          if results:
+              raise SystemExit('Review potential secrets before publishing')
+          print('No secret candidates detected in tracked files')
+          PY

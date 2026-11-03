@@ -117,6 +117,13 @@ class SecureBuffer:
             abstraction, so we resolve the default backend at
             construction time rather than at module load.
         """
+        # Keep finalization safe if validation or allocation rejects construction.
+        self._released = True
+        if not isinstance(size, int) or isinstance(size, bool) or size < 0:
+            raise ValueError("size must be a non-negative integer")
+        if (not isinstance(overwrite_passes, int) or isinstance(overwrite_passes, bool)
+                or overwrite_passes < 0):
+            raise ValueError("overwrite_passes must be a non-negative integer")
         self.size = size
         self._overwrite_passes = overwrite_passes
         self._buf: ctypes.Array = (ctypes.c_char * size)()
@@ -149,6 +156,10 @@ class SecureBuffer:
     def write(self, data: bytes, offset: int = 0) -> None:
         if self._released:
             raise RuntimeError("Buffer already released")
+        if not isinstance(offset, int) or isinstance(offset, bool) or offset < 0:
+            raise ValueError("offset must be a non-negative integer")
+        if not isinstance(data, bytes):
+            raise TypeError("data must be bytes")
         end = offset + len(data)
         if end > self.size:
             raise OverflowError(f"Data ({end}B) exceeds buffer ({self.size}B)")
@@ -158,8 +169,12 @@ class SecureBuffer:
     def read(self, length: Optional[int] = None, offset: int = 0) -> bytes:
         if self._released:
             raise RuntimeError("Buffer already released")
+        if not isinstance(offset, int) or isinstance(offset, bool) or offset < 0:
+            raise ValueError("offset must be a non-negative integer")
         if length is None:
             length = self._data_length - offset
+        if not isinstance(length, int) or isinstance(length, bool) or length < 0:
+            raise ValueError("length must be a non-negative integer")
         if offset + length > self.size:
             raise OverflowError("Read exceeds buffer bounds")
         return bytes(self._buf[offset: offset + length])
@@ -238,7 +253,7 @@ class SecureBufferPool:
         pre-allocated batch and any later ``acquire()`` overflow.
         High-assurance deployments pass a TEE backend here once."""
         self._available: list[SecureBuffer] = []
-        self._in_use: set[int] = set()
+        self._in_use: dict[int, SecureBuffer] = {}
         self._buffer_size = buffer_size
         self._use_mlock = use_mlock
         self._overwrite_passes = overwrite_passes
@@ -261,15 +276,19 @@ class SecureBufferPool:
             )
         else:
             buf = self._available.pop()
-        self._in_use.add(id(buf))
+        self._in_use[id(buf)] = buf
         return buf
 
     def return_buffer(self, buf: SecureBuffer) -> None:
+        if self._in_use.get(id(buf)) is not buf:
+            raise ValueError("Buffer is not checked out from this pool")
         buf.secure_wipe()
-        self._in_use.discard(id(buf))
-        self._available.append(buf)
+        del self._in_use[id(buf)]
+        if not buf._released:
+            self._available.append(buf)
 
     def release_all(self) -> None:
-        for buf in self._available:
+        for buf in [*self._available, *self._in_use.values()]:
             buf.release()
         self._available.clear()
+        self._in_use.clear()

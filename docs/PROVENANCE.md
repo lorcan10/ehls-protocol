@@ -16,3 +16,7 @@ No private Git history, patent drafts, deployment certificates, credentials, mod
 ## Integration kit (0.2.0)
 
 Added a new optional local simulator API (`ehls/`), CLI, browser example, JavaScript client, Docker configuration and integration guide. These are new public integration components; they do not export the private product backend or printer agent. The original source manifest still records the 0.1.0 extraction inputs.
+
+## Publication security review
+
+Hardened the public simulator request boundary and the extracted memory helpers, added regression tests, prevented smoke-test credential forwarding on redirects, and documented the review in `SECURITY.md`. These changes are specific to this public repository; the private source checkout was not edited.

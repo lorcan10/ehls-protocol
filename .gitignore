@@ -7,6 +7,15 @@ build/
 dist/
 .DS_Store
 .env
+.env.*
+!.env.example
+.secrets/
+credentials.json
+service-account*.json
 *.pem
 *.key
+*.p12
+*.pfx
+*.keystore
+*.jks
 *.gcode

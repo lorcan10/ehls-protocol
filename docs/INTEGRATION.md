@@ -139,7 +139,7 @@ Example request body:
 
 A snapshot has `session_id`, `adapter`, `status`, `total_segments`, `completed_segments`, `progress` (0–100), `memory_lock_requested`, `created_at`, `updated_at`, `last_event`, and nullable `error`. Status is `queued`, `streaming`, `completed`, `cancelled`, or `failed`. Timestamps use Unix seconds. `completed_segments` increments after simulated execution, working-buffer release and signed acknowledgement verification.
 
-Error responses include 401 for a missing/invalid token, 404 for unknown/expired sessions, 422 for invalid input, and 429 when active capacity is exhausted. Locking failure appears in the asynchronous snapshot as `status: failed` and `error: memory_lock_failed`. Do not treat HTTP 202 as successful execution.
+Session requests are authenticated before their bodies are read. Bodies are limited to 4 KiB and must arrive within 10 seconds. Error responses include 401 for a missing/invalid token, 404 for unknown/expired sessions, 408 for a body-read timeout, 413 for an oversized body, 422 for invalid input, and 429 when active capacity is exhausted. Locking failure appears in the asynchronous snapshot as `status: failed` and `error: memory_lock_failed`. Do not treat HTTP 202 as successful execution.
 
 Session snapshots contain no protocol keys, plaintext instructions or ciphertext. They are retained in memory for up to one hour after completion. The service keeps at most 100 records; older terminal records can be evicted earlier at capacity. A service restart loses all state. There is no reconnect/resume guarantee.
 
@@ -149,7 +149,7 @@ The generated OpenAPI schema at `/openapi.json` supports client generation for o
 
 | Setting | Default | Purpose |
 | --- | --- | --- |
-| `EHLS_API_TOKEN` | Generated at startup | At least 24 ASCII characters; local service access |
+| `EHLS_API_TOKEN` | Generated at startup | At least 24 printable ASCII characters without spaces; local service access |
 | `EHLS_ALLOWED_ORIGINS` | Localhost/127.0.0.1 on ports 5173 and 3000 | Comma-separated browser origins |
 | `EHLS_MEMORY_LOCK` | `1` | Set `0` only for an explicitly unlocked development simulation |
 | `--host` | `127.0.0.1` | Listening address; container binds internally to `0.0.0.0` |

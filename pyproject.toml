@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=77"]
+requires = ["setuptools>=84.1"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "ehls-protocol"
-version = "0.2.0"
+version = "0.2.1"
 description = "EHLS protocol reference: machine identity, encrypted instruction segments, and packet authentication"
 readme = "README.md"
 requires-python = ">=3.11"

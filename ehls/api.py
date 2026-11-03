@@ -11,13 +11,15 @@ from fastapi.responses import HTMLResponse, Response
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from ehls import __version__
+from ehls.security import SessionBoundaryMiddleware
 from ehls.simulator import SimulationManager, SimulationRequest, SessionCapacityError, SessionView
 
 
 def create_app(*, api_token: str, allowed_origins: list[str] | None = None,
                memory_lock: bool = True) -> FastAPI:
-    if not api_token or len(api_token) < 24 or not api_token.isascii():
-        raise ValueError("EHLS_API_TOKEN must contain at least 24 ASCII characters")
+    if (not api_token or len(api_token) < 24
+            or any(not 33 <= ord(char) <= 126 for char in api_token)):
+        raise ValueError("EHLS_API_TOKEN must contain at least 24 printable ASCII characters without spaces")
     manager = SimulationManager(memory_lock=memory_lock)
 
     @asynccontextmanager
@@ -28,6 +30,7 @@ def create_app(*, api_token: str, allowed_origins: list[str] | None = None,
     app = FastAPI(title="EHLS Integration API", version=__version__, lifespan=lifespan,
                   description="Local simulator API. No printer connection or physical execution.")
     app.state.manager = manager
+    app.add_middleware(SessionBoundaryMiddleware, api_token=api_token)
     app.add_middleware(CORSMiddleware,
         allow_origins=allowed_origins if allowed_origins is not None else [
             "http://localhost:5173", "http://127.0.0.1:5173",

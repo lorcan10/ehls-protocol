@@ -63,7 +63,7 @@ test('polling has an overall deadline', async () => {
 });
 
 test('credentials and non-HTTP base URLs are rejected', () => {
-  for (const baseUrl of ['file:///tmp/test', 'https://user:password@example.com', 'https://example.com/?token=x']) {
+  for (const baseUrl of ['file:///tmp/test', 'https://user:password@example.com', 'https://example.com/?token=x']) { // pragma: allowlist secret -- deliberately invalid example URL
     assert.throws(() => new EHLSClient({ baseUrl, token: 'test' }), TypeError);
   }
   assert.throws(() => new EHLSClient(), TypeError);
