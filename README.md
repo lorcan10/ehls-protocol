@@ -6,6 +6,20 @@
 
 The service currently simulates the server and receiving gateway in one process. It uses real encryption, message signatures, sequencing checks and managed-buffer wiping. Machine enrollment and physical execution are synthetic. **No printer is required or controlled.**
 
+## Why I built EHLS
+
+EHLS started with a problem I faced while developing 3D-printable fixed-wing drones. I wanted to sell my designs, but each one represented hundreds of hours of work across design, simulation, physical testing and electronics integration. The STL files were only one part of that investment.
+
+I did not want to commercialise that work simply by selling the STL files. Once someone had the geometry, they could retain it, copy it and redistribute it independently of me. I wanted to explore a way for a customer to manufacture a design while keeping control over how the manufacturing instructions were delivered.
+
+That led me to develop **Ephemeral Hardware-Locked Streaming**: an approach intended to bind instruction delivery to a particular machine and session, stream instructions in bounded encrypted segments, and clear working buffers as execution progresses. The goal was to sell access to manufacturing a design without handing over a reusable STL file.
+
+I later explored commercialising the approach for spare-parts manufacturing across a number of sectors. Those efforts did not prove commercially viable, and I moved on from pursuing it as a business.
+
+I am sharing the protocol because it may still be useful beyond the applications I explored. There could be opportunities around collecting manufacturing telemetry and execution data, or using the approach as a form of digital rights management (DRM) for machine instructions in other settings. I would be interested to see what others make of it.
+
+The original business did not work out, but someone else may see an application I have not considered. The code is available under the MIT licence so others can inspect it, experiment with it and build on it.
+
 ## Start in a few minutes
 
 Install Git and **Python 3.11+**, then clone:
