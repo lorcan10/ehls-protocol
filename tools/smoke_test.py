@@ -25,7 +25,7 @@ while True:
     try:
         health = request('/health')
         break
-    except URLError:
+    except (URLError, ConnectionError, TimeoutError):
         if time.monotonic() >= deadline:
             raise SystemExit('Service did not become healthy within 30 seconds')
         time.sleep(.1)
