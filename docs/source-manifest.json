@@ -1,0 +1,90 @@
+{
+  "source_commit": "96ea3e765d046a3780de3f1b232ea0f82edbcf4a",
+  "files": [
+    {
+      "source": "shared/__init__.py",
+      "destination": "shared/__init__.py",
+      "source_sha256": "510f36a9b94de5e779bcfa8b37429755eb6aa93ad7c15c10492939868c677ba6"
+    },
+    {
+      "source": "shared/models.py",
+      "destination": "shared/models.py",
+      "source_sha256": "932ea4f243addbb4713eceb8e3eeff66eb85e79fa8eed4b9ad27f4a85d1e0c6e"
+    },
+    {
+      "source": "shared/protocol.py",
+      "destination": "shared/protocol.py",
+      "source_sha256": "52a03d311c11fc3dd44cd728d8d10b969961643aff6abf65bb580247803dc496"
+    },
+    {
+      "source": "shared/crypto.py",
+      "destination": "shared/crypto.py",
+      "source_sha256": "fe20d01b45c58e331e8999c81c4a692a8bf2dd29f00eceac08af151ba6e252c9"
+    },
+    {
+      "source": "shared/kdf_constants.py",
+      "destination": "shared/kdf_constants.py",
+      "source_sha256": "e8c44a54cc5259e8f7f075f7ba782e76147581edfa1ade63392892ef1c353b72"
+    },
+    {
+      "source": "shared/identity_artefacts.py",
+      "destination": "shared/identity_artefacts.py",
+      "source_sha256": "59b3ddd89ef046f98b35ff33df886d6871dd0dc1efc938d8f69fcd1648647071"
+    },
+    {
+      "source": "shared/secure_memory.py",
+      "destination": "shared/secure_memory.py",
+      "source_sha256": "950b72509600324e6bd07cee9095c6c62dfe2d37ec09dd908a98618abd103077"
+    },
+    {
+      "source": "services/gateway/secure_zero.py",
+      "destination": "gateway/secure_zero.py",
+      "source_sha256": "d4a6d54219e0a3b8e7c6b4902750055c6f46dcae2b9bbbb5e44f939ed86851cb"
+    },
+    {
+      "source": "services/gateway/memory_lock_backends.py",
+      "destination": "gateway/memory_lock_backends.py",
+      "source_sha256": "d44c3e5a399c9340344d2b7893a69113532ce3b5023d164e8a90e3f61507b0cf"
+    },
+    {
+      "source": "tests/test_shared_crypto.py",
+      "destination": "tests/test_shared_crypto.py",
+      "source_sha256": "c76531e84720da0e034afce6c498df47ae667d5d41b15b4f94704c5a4745bbef"
+    },
+    {
+      "source": "tests/test_shared_protocol.py",
+      "destination": "tests/test_shared_protocol.py",
+      "source_sha256": "bf8646ed364adc5e6aff4c8361c6395a72dab1b15c95dcc85e9a680e976f557c"
+    },
+    {
+      "source": "tests/test_shared_protocol_roundtrip.py",
+      "destination": "tests/test_shared_protocol_roundtrip.py",
+      "source_sha256": "e1033049d5ad0d59bce89c5cfb9681523884598241b3511fac850737dff0e9c1"
+    },
+    {
+      "source": "tests/test_shared_secure_memory.py",
+      "destination": "tests/test_shared_secure_memory.py",
+      "source_sha256": "0f0a90f1364958715555a084615858ecd51b8693c4403b126735b995a282e226"
+    },
+    {
+      "source": "tests/test_shared_secure_memory_platform.py",
+      "destination": "tests/test_shared_secure_memory_platform.py",
+      "source_sha256": "f8344819e42ca07fce44c6faeea4f93b963073a9405ef70e84c3026fe0e2d703"
+    },
+    {
+      "source": "tests/test_x25519_alternative.py",
+      "destination": "tests/test_x25519_alternative.py",
+      "source_sha256": "58f3f361128709849bb701ace8a50b5366d38511863cd34253419f6f632900f1"
+    },
+    {
+      "source": "tests/security/test_memory_lock_backends.py",
+      "destination": "tests/security/test_memory_lock_backends.py",
+      "source_sha256": "b35c1abcd45a427147d264333a8b6060534f9524905581a1c719a7f87cfae30f"
+    },
+    {
+      "source": "tests/security/test_secure_zero.py",
+      "destination": "tests/security/test_secure_zero.py",
+      "source_sha256": "5e47abe0c249a2418e672c9951dd5a7c50e2d5eb60a0b306343b64477cbd0210"
+    }
+  ]
+}

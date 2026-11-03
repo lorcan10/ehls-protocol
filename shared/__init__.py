@@ -1,0 +1,1 @@
+"""EHLS Shared Module — common crypto, protocol, models, and secure memory."""
